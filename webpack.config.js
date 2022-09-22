@@ -13,6 +13,9 @@ module.exports = {
       },
     ],
   },
+  optimization: {
+    minimize: false
+  },
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
   },
@@ -21,9 +24,9 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
   },
   plugins: [
-      new HtmlWebpackPlugin({
-            template: './src/index.html',
-      })
+    new HtmlWebpackPlugin({
+      template: './src/index.html'
+    })
   ],
   devServer: {
     static: {
@@ -35,7 +38,7 @@ module.exports = {
       overlay: {
         warnings: false,
         errors: true
-      }      
+      }
     }
   },
 };

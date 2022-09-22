@@ -6,12 +6,12 @@ function getLane(ctx: any, cells: string[][], x: number, y: number): string[] {
     return cells.map(arr => arr[x]);
 }
 
-function clearLane(ctx: any, G: any, x: number, y: number){
+function clearLane(ctx: any, G: any, x: number, y: number) {
     if (ctx.currentPlayer == '0') {
         G.cells[y][G.cells[y].indexOf('0')] = null;
         return;
     }
-    
+
     for (let i = 0; i < G.cells.length; i++) {
         if (G.cells[i][x] == '1') {
             G.cells[i][x] = null;
@@ -20,9 +20,9 @@ function clearLane(ctx: any, G: any, x: number, y: number){
     }
 }
 
-function isVictory(cells: string[][]): boolean{
-    if (cells[SIZE+1].filter(c => c != null).length == SIZE) return true;
-    if (cells.map(arr => arr[SIZE+1]).filter(c => c != null).length == SIZE) return true;
+function isVictory(cells: string[][]): boolean {
+    if (cells[SIZE + 1].filter(c => c != null).length == SIZE) return true;
+    if (cells.map(arr => arr[SIZE + 1]).filter(c => c != null).length == SIZE) return true;
     return false;
 }
 
@@ -47,7 +47,7 @@ export const PodRacer = {
     moves: {
         clickCell: (G: any, ctx: any, x: number, y: number) => {
             if (G.cells[y][x] !== null) return INVALID_MOVE;
-        
+
             const lane = getLane(ctx, G.cells, x, y);
             const currentLanePos = lane.indexOf(ctx.currentPlayer);
             // Prevent click on corner nodes
@@ -56,11 +56,11 @@ export const PodRacer = {
             const newLanePos = ctx.currentPlayer == '0' ? x : y;
 
             // Player can't move backwards
-            if (newLanePos < currentLanePos ) return INVALID_MOVE;
+            if (newLanePos < currentLanePos) return INVALID_MOVE;
             // Player can only move 1 or 2 nodes
             if (newLanePos - currentLanePos > 2) return INVALID_MOVE;
             // Player can only move 2 nodes when jumping over other player
-            if (newLanePos - currentLanePos == 2 && lane[newLanePos-1] == null) return INVALID_MOVE;
+            if (newLanePos - currentLanePos == 2 && lane[newLanePos - 1] == null) return INVALID_MOVE;
 
             clearLane(ctx, G, x, y);
             G.cells[y][x] = ctx.currentPlayer;

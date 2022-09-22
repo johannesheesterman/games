@@ -51,7 +51,9 @@ export default class PodRacerClient {
             const x = parseInt(cell.dataset.x);
             const y = parseInt(cell.dataset.y);            
             const cellValue = state.G.cells[y][x];
-            cell.textContent = cellValue !== null ? cellValue : '';
+            if (cellValue == null) cell.textContent = '';
+            else if (cellValue == '0') cell.textContent = '▹';
+            else cell.textContent = '▾';
         });
         const messageEl = this.rootElement.querySelector('.winner');
         if (state.ctx.gameover) {

@@ -70,6 +70,8 @@ export default class PodRacerClient {
                 state.ctx.gameover.winner !== undefined
                     ? 'Winner: ' + state.ctx.gameover.winner
                     : 'Draw!';
+            
+            this.rootElement.classList.add('gameover');
         } else {
             messageEl.textContent = '';
         }

@@ -45,15 +45,24 @@ export default class PodRacerClient {
     }
 
     update(state: any) {
+        this.rootElement.setAttribute('player', state.ctx.currentPlayer);
+
         const cells = Array.from(this.rootElement.querySelectorAll('.cell')) as HTMLTableCellElement[];
 
         cells.forEach((cell) => {
             const x = parseInt(cell.dataset.x);
             const y = parseInt(cell.dataset.y);            
             const cellValue = state.G.cells[y][x];
+            cell.className = 'cell';
             if (cellValue == null) cell.textContent = '';
-            else if (cellValue == '0') cell.textContent = '▹';
-            else cell.textContent = '▾';
+            else if (cellValue == '0') { 
+                cell.textContent = '▹'; 
+                cell.className = 'cell p0';
+            }
+            else { 
+                cell.textContent = '▾'; 
+                cell.className = 'cell p1';
+            }
         });
         const messageEl = this.rootElement.querySelector('.winner');
         if (state.ctx.gameover) {

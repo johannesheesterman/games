@@ -26,6 +26,25 @@ function isVictory(cells: string[][]): boolean {
     return false;
 }
 
+function isValidMove(G: any, ctx: any, x: number, y: number): boolean {
+    if (G.cells[y][x] !== null) return false;
+    const lane = getLane(ctx, G.cells, x, y);
+    const currentLanePos = lane.indexOf(ctx.currentPlayer);
+    // Prevent click on corner nodes
+    if (currentLanePos == -1) return false;
+
+    const newLanePos = ctx.currentPlayer == '0' ? x : y;
+
+    // Player can't move backwards
+    if (newLanePos < currentLanePos) return false;
+    // Player can only move 1 or 2 nodes
+    if (newLanePos - currentLanePos > 2) return false;
+    // Player can only move 2 nodes when jumping over other player
+    if (newLanePos - currentLanePos == 2 && lane[newLanePos - 1] == null) return false;
+
+    return true;
+}
+
 export const PodRacer = {
     setup: (ctx: any) => {
         const g = { cells: Array(SIZE + 2).fill(null) };
@@ -46,22 +65,7 @@ export const PodRacer = {
 
     moves: {
         clickCell: (G: any, ctx: any, x: number, y: number) => {
-            if (G.cells[y][x] !== null) return INVALID_MOVE;
-
-            const lane = getLane(ctx, G.cells, x, y);
-            const currentLanePos = lane.indexOf(ctx.currentPlayer);
-            // Prevent click on corner nodes
-            if (currentLanePos == -1) return INVALID_MOVE;
-
-            const newLanePos = ctx.currentPlayer == '0' ? x : y;
-
-            // Player can't move backwards
-            if (newLanePos < currentLanePos) return INVALID_MOVE;
-            // Player can only move 1 or 2 nodes
-            if (newLanePos - currentLanePos > 2) return INVALID_MOVE;
-            // Player can only move 2 nodes when jumping over other player
-            if (newLanePos - currentLanePos == 2 && lane[newLanePos - 1] == null) return INVALID_MOVE;
-
+            if (!isValidMove(G, ctx, x, y)) return INVALID_MOVE;
             clearLane(ctx, G, x, y);
             G.cells[y][x] = ctx.currentPlayer;
         },

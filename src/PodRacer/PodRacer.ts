@@ -76,4 +76,19 @@ export const PodRacer = {
             return { winner: ctx.currentPlayer };
         }
     },
+
+    ai: {
+        enumerate: (G: any, ctx: any) => {
+            let moves = [];
+            for (let y = 1; y <= SIZE+1; y++) {
+                for (let x = 1; x <= SIZE+1; x++) {
+                    if (isValidMove(G, ctx, x, y)) {
+                        console.log('enum', x, y, ctx);
+                        moves.push({ move: 'clickCell', args: [x, y] });
+                    }
+                }
+            }
+            return moves;
+        },
+    },
 };
